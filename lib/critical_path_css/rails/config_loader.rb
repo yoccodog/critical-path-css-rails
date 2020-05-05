@@ -19,12 +19,13 @@ module CriticalPathCss
       end
 
       def format_css_paths
-        config['css_paths'] = [config['css_path']] if config['css_path']
+        config['default_manifest'] = format_path(precompiled_name(config['default_manifest']))
 
-        unless config['css_paths']
-          config['css_paths'] = [ActionController::Base.helpers.stylesheet_path(config['manifest_name'], host: '')]
+        if config['exceptions']
+          config['exceptions'].each_pair do |path, stylesheet|
+            config['exceptions'][path] = format_path(precompiled_name(stylesheet))
+          end
         end
-        config['css_paths'].map! { |path| format_path(path) }
       end
 
       def format_path(path)
@@ -32,13 +33,13 @@ module CriticalPathCss
       end
 
       def validate_css_paths
-        if config['manifest_name'] && (config['css_path'] || config['css_paths'])
-          raise LoadError, 'Cannot specify both manifest_name and css_path(s)'
-        elsif config['css_path'] && config['css_paths']
-          raise LoadError, 'Cannot specify both css_path and css_paths'
-        elsif config['css_paths'] && config['css_paths'].length != config['routes'].length
-          raise LoadError, 'Must specify css_paths for each route'
+        if config['default_manifest'].empty?
+          raise LoadError, 'default_manifest must be specified'
         end
+      end
+
+      def precompiled_name(stylesheet)
+        ActionController::Base.helpers.stylesheet_path(stylesheet, host: '')
       end
     end
   end

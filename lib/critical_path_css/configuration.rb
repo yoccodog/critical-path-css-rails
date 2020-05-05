@@ -9,16 +9,12 @@ module CriticalPathCss
       @config['base_url']
     end
 
-    def css_paths
-      @config['css_paths']
+    def default_manifest
+      @config['default_manifest']
     end
 
-    def manifest_name
-      @config['manifest_name']
-    end
-
-    def routes
-      @config['routes']
+    def exceptions
+      @config['exceptions']
     end
 
     def penthouse_options
@@ -26,7 +22,7 @@ module CriticalPathCss
     end
 
     def path_for_route(route)
-      css_paths[routes.index(route)] || css_paths.first
+      exceptions[route] || default_manifest
     end
   end
 end

@@ -3,14 +3,12 @@ require 'open3'
 
 module CriticalPathCss
   class CssFetcher
+    attr_accessor :config
+
     GEM_ROOT = File.expand_path(File.join('..', '..'), File.dirname(__FILE__))
 
     def initialize(config)
       @config = config
-    end
-
-    def fetch
-      @config.routes.map { |route| [route, fetch_route(route)] }.to_h
     end
 
     def fetch_route(route)
@@ -40,15 +38,18 @@ module CriticalPathCss
           'Accept-Encoding' => 'identity'
         }
       }.merge(@config.penthouse_options)
+
       out, err, st = Dir.chdir(GEM_ROOT) do
         Open3.capture3('node', 'lib/fetch-css.js', JSON.dump(options))
       end
+
       if !st.exitstatus.zero? || out.empty? && !err.empty?
         STDOUT.puts out
         STDERR.puts err
         STDERR.puts "Failed to get CSS for route #{route}\n" \
               "  with options=#{options.inspect}"
       end
+
       out
     end
   end
