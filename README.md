@@ -1,4 +1,6 @@
-# critical-path-css-rails [![Code Climate](https://codeclimate.com/github/mudbugmedia/critical-path-css-rails/badges/gpa.svg)](https://codeclimate.com/github/mudbugmedia/critical-path-css-rails)
+# critical-path-css-rails [![Code Climate](https://codeclimate.com/github/yoccodog/critical-path-css-rails/badges/gpa.svg)](https://codeclimate.com/github/yoccodog/critical-path-css-rails)
+
+This is a fork from (mudbugmedia/critical-path-css-rails)[https://github.com/mudbugmedia/critical-path-css-rails]. The primary difference is the structure of the configuration file.
 
 Only load the CSS you need for the initial viewport in Rails!
 
